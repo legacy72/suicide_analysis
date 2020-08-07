@@ -23,11 +23,12 @@ class ComposeData:
         training_data = {}
 
         data_and_type_mapping = self.get_data_from_file()
-
         for type, data_text in data_and_type_mapping.items():
             data_list = data_text.split('-------------------------------')
             training_data[type] = []
-            for data in data_list:
+            for step, data in enumerate(data_list):
+                if step % 1000 == 0:
+                    print(f'STEP: {step}')
                 if not data.strip():
                     continue
                 tp = TextPreparation(data)
@@ -49,7 +50,7 @@ if __name__ == '__main__':
         'data/suicide_data2.txt': 'suicide',
         'data/normal_data.txt': 'normal',
     }
-    file_write = 'data/training_data.txt'
+    file_write = 'data/training_data.json'
 
     cd = ComposeData(mapping, file_write)
     cd.fill_training_data()
